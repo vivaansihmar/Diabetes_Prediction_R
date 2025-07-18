@@ -80,4 +80,4 @@ cat("Specificity:", round(conf_matrix$byClass["Specificity"], 3), "\n")
 results <- data.frame(Actual = testdata$Outcome, Predicted = predictions)
 write.csv(results, "output/predictions.csv", row.names = FALSE)
 cat("\n Predictions saved to: output/predictions.csv\n")
-
+source("main.R")

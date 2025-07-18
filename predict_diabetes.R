@@ -60,4 +60,12 @@ cat("\n Model type:\n")
 print(model$type)
 source("predict_diabetes.R")
 
-
+saveRDS(model, file = "daibetes_model.rds")
+ 
+install.packages("plumber")
+library(plumber)
+install.packages("promises")
+library(promises)
+install.packages("swagger")
+library(swagger)
+install.packages(c("future", "httpuv", "jsonlite", "htmltools"))
