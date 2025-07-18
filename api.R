@@ -1,8 +1,11 @@
+# api.r
+
 library(plumber)
-# Load model
+
+# Load the model
 model <- readRDS("diabetes2_model.rds")
 
-#* Predict diabetes
+#* @post /predict
 #* @param Pregnancies:int
 #* @param Glucose:double
 #* @param BloodPressure:double
@@ -11,9 +14,7 @@ model <- readRDS("diabetes2_model.rds")
 #* @param BMI:double
 #* @param DiabetesPedigreeFunction:double
 #* @param Age:int
-#* @post /predict
 function(Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age) {
-  
   input_data <- data.frame(
     Pregnancies = as.integer(Pregnancies),
     Glucose = as.numeric(Glucose),
@@ -25,10 +26,14 @@ function(Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, Diabe
     Age = as.integer(Age)
   )
   
-  # Predict
   pred <- predict(model, newdata = input_data)
-  
-  # Return prediction as a character (for JSON)
   list(prediction = as.character(pred))
 }
-class(model)
+
+# Serve static HTML
+# This goes at the bottom of api.r
+# Will serve www/index.html on localhost:8000
+pr() %>%
+  pr_static("/", "www") %>%
+  pr_mount("/", plumb("api.r")) %>%
+  pr_run(host = "0.0.0.0", port = 8000)

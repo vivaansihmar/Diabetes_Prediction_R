@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Diabetes predictior</title>
+  </head>
+  <body>
+    <h1>Diabetes prediction</h1>
+    <form id ="prediction-form">
+      Glucose: <input type="number" id = "BMI" /><br/>
+      < <button type="submit">Predict</button>
+    </form>
+    <div id="result"></div>
+    <script>
+      document.getElementById("prediction-form").onsubmit = async (e) => {
+        e.preventDefault();
+        const Glucose = 
+        document.getElementById("Glucose").value;
+        const BMI = document.getElementById("BMI").value;
+        const res = await fetch("/Predict",
+        { method: "post",
+        headers: { "content-type": "application/JSON" },
+        body: JSON.Stringify({ Glucose,
+          BMI})
+            });
+            const data = await res.JSON();
+            document.getElementById("result").innerText ="prediction: " + data.result;
+      };
+    </script>
+  </body>
+</html>
